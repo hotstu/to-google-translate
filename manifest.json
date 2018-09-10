@@ -21,11 +21,7 @@
     "background": {
         "scripts": ["translate.js"]
     },
-
-    "permissions": [
-        "contextMenus",
-        "storage"
-    ],
+    "permissions": [ "http://*/*", "https://*/*", "tabs", "nativeMessaging", "contextMenus", "storage" ],
 
     "web_accessible_resources": ["icons/help.png"],
 

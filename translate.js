@@ -35,14 +35,16 @@ storage.get({
     'userLang': 'es',
     'ttsLang': 'en',
     'enableTT': true,
-    'enableTTS': true
+    'enableTTS': false,
+    'enableYoudao': true
 }, function (items) {
     var pageLang = items.pageLang,
         userLang = items.userLang,
         ttsLang = items.ttsLang;
         enableTT = items.enableTT;
         enableTTS = items.enableTTS;
-    
+        enableYoudao = items.enableYoudao;
+
     // create Translate context menu
     if (enableTT == true) {
         chrome.contextMenus.create({
@@ -56,6 +58,13 @@ storage.get({
     chrome.contextMenus.create({
             id: 'tts',
             title: chrome.i18n.getMessage('contextMenuTitleTextToSpeech', ttsLang),
+            contexts: ['selection']
+        });
+    }
+    if (enableYoudao == true) {
+        chrome.contextMenus.create({
+            id: 'youdao',
+            title: '发送至有道',
             contexts: ['selection']
         });
     }
@@ -80,7 +89,30 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
             tabCreateWithOpenerTabId(item.ttsURL+encodeURIComponent(selectedText)+'&textlen='+selectedText.length, tab);
         });
     }
+    if (info.menuItemId == 'youdao') {
+        //console.log("youdao");
+        sendStrokeWord(selectedText);
+    }
 });
+
+function sendToDict(url) {
+    url += 'src=' + 'chrome' + '&';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.send();
+}
+
+function sendWord(word, offset) {
+    var url = 'http://127.0.0.1:50000/word='+word+'&offset='+offset+'&';
+    sendToDict(url);
+}
+
+function sendStrokeWord(word)
+{
+    var url = 'http://127.0.0.1:50000/word='+word+'&isstroke=true&';
+    sendToDict(url);
+}
+
 
 function getGoogleTranslatorDomain() {
     var offset = new Date().getTimezoneOffset();
