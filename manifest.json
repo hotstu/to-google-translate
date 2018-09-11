@@ -23,11 +23,5 @@
     },
     "permissions": [ "http://*/*", "https://*/*", "tabs", "nativeMessaging", "contextMenus", "storage" ],
 
-    "web_accessible_resources": ["icons/help.png"],
-
-    "applications": {
-        "gecko": {
-            "id": "jid1-93WyvpgvxzGATw@jetpack"
-        }
-    }
+    "web_accessible_resources": ["icons/help.png"]
 }
